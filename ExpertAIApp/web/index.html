@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Challenge Workshop - Experten-Eingabe</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <div class="headerRow">
+          <h1>AI Challenge Workshop</h1>
+          <button id="btnTheme" class="btn btnOutline btnSmall" type="button">
+            Day mode
+          </button>
+        </div>
+        <p id="subtitle" class="subtitle">
+          Experten: Geben Sie Ihren Namen und Ihre Antworten ein und klicken Sie auf "Absenden".
+        </p>
+        <p id="submissionCount" class="submissionCount muted"></p>
+      </header>
+
+      <!-- Form Section -->
+      <section id="formSection" class="page">
+        <section class="card">
+          <div class="cardHeader">
+            <div>
+              <h2>Experten-Eingaben</h2>
+              <p class="muted">Bitte geben Sie Ihren Namen ein und beantworten Sie die folgenden Fragen.</p>
+            </div>
+          </div>
+
+          <!-- Name Input -->
+          <div class="nameInputSection">
+            <label for="nameInput" class="qTitle">Ihr Name</label>
+            <input 
+              type="text" 
+              id="nameInput" 
+              class="nameInput" 
+              placeholder="Vor- und Nachname eingeben..."
+              autocomplete="name"
+            />
+            <div id="nameError" class="qHelper error" hidden>Bitte geben Sie Ihren Namen ein.</div>
+          </div>
+
+          <div id="questionsRoot" class="questions"></div>
+          <div id="errorBox" class="errorBox" hidden></div>
+
+          <div class="pageActions">
+            <button id="btnSubmit" class="btn btnPrimary btnLarge" disabled>
+              <span class="btnText">Absenden</span>
+              <span class="spinner" hidden></span>
+            </button>
+            <button id="btnReset" class="btn btnOutline">Zurücksetzen</button>
+          </div>
+        </section>
+      </section>
+
+      <!-- Success Section (shown after submission) -->
+      <section id="successSection" class="page" hidden>
+        <section class="card successCard">
+          <div class="successIcon">&#10003;</div>
+          <h2>Vielen Dank!</h2>
+          <p class="successMessage">Ihre Antworten wurden erfolgreich gespeichert.</p>
+          <p id="successDetails" class="muted"></p>
+        </section>
+      </section>
+
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
