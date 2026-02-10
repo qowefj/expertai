@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist submissions data
+      - ./data:/app/data
+    environment:
+      # OpenAI Configuration
+      - CONCIRCLE_OPENAI_BASE_URL=https://api.openai.com/v1
+      - CONCIRCLE_OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CONCIRCLE_OPENAI_MODEL=gpt-4o-mini
+      - CONCIRCLE_OPENAI_TIMEOUT=180  # Increase if experiencing 504 errors
+      
+      # Admin Configuration
+      - ADMIN_SECRET_KEY=${ADMIN_SECRET_KEY:-admin123}
+      
+      # Optional: Disable SSL verification (not recommended for production)
+      # - CONCIRCLE_SSL_VERIFY=0
+      
+      # Optional: API mode
+      # - CONCIRCLE_OPENAI_API_MODE=auto
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/api/submissions/count')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Nginx reverse proxy with proper timeout configuration
+  # Uncomment if you need a reverse proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - app
+  #   restart: unless-stopped

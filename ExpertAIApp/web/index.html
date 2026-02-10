@@ -11,13 +11,16 @@
       <header class="header">
         <div class="headerRow">
           <h1>AI Challenge Workshop</h1>
-          <button id="btnTheme" class="btn btnOutline btnSmall" type="button">
-            Day mode
-          </button>
+          <div class="headerButtons">
+            <button id="btnLang" class="btn btnOutline btnSmall" type="button">
+              EN
+            </button>
+            <button id="btnTheme" class="btn btnOutline btnSmall" type="button">
+              Day mode
+            </button>
+          </div>
         </div>
-        <p id="subtitle" class="subtitle">
-          Experten: Geben Sie Ihren Namen und Ihre Antworten ein und klicken Sie auf "Absenden".
-        </p>
+        <p id="subtitle" class="subtitle"></p>
         <p id="submissionCount" class="submissionCount muted"></p>
       </header>
 
@@ -26,22 +29,22 @@
         <section class="card">
           <div class="cardHeader">
             <div>
-              <h2>Experten-Eingaben</h2>
-              <p class="muted">Bitte geben Sie Ihren Namen ein und beantworten Sie die folgenden Fragen.</p>
+              <h2 id="formTitle"></h2>
+              <p id="formDesc" class="muted"></p>
             </div>
           </div>
 
           <!-- Name Input -->
           <div class="nameInputSection">
-            <label for="nameInput" class="qTitle">Ihr Name</label>
+            <label for="nameInput" id="nameLabel" class="qTitle"></label>
             <input 
               type="text" 
               id="nameInput" 
               class="nameInput" 
-              placeholder="Vor- und Nachname eingeben..."
+              placeholder=""
               autocomplete="name"
             />
-            <div id="nameError" class="qHelper error" hidden>Bitte geben Sie Ihren Namen ein.</div>
+            <div id="nameError" class="qHelper error" hidden></div>
           </div>
 
           <div id="questionsRoot" class="questions"></div>
@@ -49,10 +52,10 @@
 
           <div class="pageActions">
             <button id="btnSubmit" class="btn btnPrimary btnLarge" disabled>
-              <span class="btnText">Absenden</span>
+              <span class="btnText" id="btnSubmitText"></span>
               <span class="spinner" hidden></span>
             </button>
-            <button id="btnReset" class="btn btnOutline">Zurücksetzen</button>
+            <button id="btnReset" class="btn btnOutline" id="btnResetText"></button>
           </div>
         </section>
       </section>
@@ -61,8 +64,8 @@
       <section id="successSection" class="page" hidden>
         <section class="card successCard">
           <div class="successIcon">&#10003;</div>
-          <h2>Vielen Dank!</h2>
-          <p class="successMessage">Ihre Antworten wurden erfolgreich gespeichert.</p>
+          <h2 id="successTitle"></h2>
+          <p id="successMessage" class="successMessage"></p>
           <p id="successDetails" class="muted"></p>
         </section>
       </section>

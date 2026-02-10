@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Challenge Workshop - Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <div class="headerRow">
+          <h1>AI Challenge Workshop - Admin</h1>
+          <div class="headerButtons">
+            <button id="btnLang" class="btn btnOutline btnSmall" type="button">
+              EN
+            </button>
+            <button id="btnTheme" class="btn btnOutline btnSmall" type="button">
+              Day mode
+            </button>
+          </div>
+        </div>
+        <p id="subtitle" class="subtitle"></p>
+      </header>
+
+      <!-- Auth Error Section -->
+      <section id="authError" class="page" hidden>
+        <section class="card errorCard">
+          <h2 id="authErrorTitle"></h2>
+          <p id="authErrorText"></p>
+          <p class="muted" id="authErrorHint"></p>
+        </section>
+      </section>
+
+      <!-- Main Admin Section -->
+      <section id="adminSection" class="page" hidden>
+
+        <!-- Questions Configuration Card -->
+        <section class="card questionsCard">
+          <div class="cardHeader">
+            <div>
+              <h2 id="questionsConfigTitle"></h2>
+              <p class="muted" id="questionsConfigDesc"></p>
+            </div>
+            <div class="actions">
+              <button id="btnResetQuestions" class="btn btnOutline btnSmall btnDanger">
+                <span id="btnResetQuestionsText"></span>
+              </button>
+              <button id="btnSaveQuestions" class="btn btnPrimary btnSmall">
+                <span class="btnText" id="btnSaveQuestionsText"></span>
+                <span class="spinner" hidden></span>
+              </button>
+            </div>
+          </div>
+          <div id="questionsErrorBox" class="errorBox" hidden></div>
+          <div id="questionsEditor" class="questionsEditor"></div>
+          <button id="btnAddQuestion" class="btn btnOutline btnSmall btnAddQuestion">
+            <span id="btnAddQuestionText"></span>
+          </button>
+        </section>
+        
+        <!-- Stats Card -->
+        <section class="card statsCard">
+          <div class="statsRow">
+            <div class="stat">
+              <span class="statValue" id="submissionCount">0</span>
+              <span class="statLabel" id="statsLabelSubmissions"></span>
+            </div>
+          </div>
+          <div class="statsActions">
+            <button id="btnRefresh" class="btn btnOutline btnSmall"></button>
+            <button id="btnClear" class="btn btnOutline btnSmall btnDanger"></button>
+          </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="card">
+          <div class="cardHeader">
+            <div>
+              <h2 id="summaryTitle"></h2>
+              <p class="muted" id="summaryDesc"></p>
+            </div>
+            <div class="actions">
+              <button id="btnSummarize" class="btn btnPrimary" disabled>
+                <span class="btnText" id="btnSummarizeText"></span>
+                <span class="spinner" hidden></span>
+              </button>
+            </div>
+          </div>
+          <div id="errorBox" class="errorBox" hidden></div>
+        </section>
+
+        <!-- Results Section (hidden until summary is generated) -->
+        <section id="resultsSection" hidden>
+          <div class="resultsGrid">
+            <section class="card">
+              <h2 id="expertSummaryTitle"></h2>
+              <p class="muted" id="expertSummaryDesc"></p>
+              <pre id="expertInsight" class="insight muted"></pre>
+            </section>
+
+            <section class="card">
+              <h2 id="aiInsightTitle"></h2>
+              <p class="muted" id="aiInsightDesc"></p>
+              <pre id="aiInsight" class="insight muted"></pre>
+            </section>
+          </div>
+
+          <!-- Comparison Section -->
+          <section class="card compareCard">
+            <div class="cardHeader">
+              <div>
+                <h2 id="comparisonInsightTitle"></h2>
+                <p class="muted" id="comparisonInsightDesc"></p>
+              </div>
+              <div class="actions">
+                <button id="btnCompare" class="btn btnPrimary" disabled>
+                  <span class="btnText" id="btnCompareText"></span>
+                  <span class="spinner" hidden></span>
+                </button>
+              </div>
+            </div>
+            <pre id="comparisonInsight" class="insight muted"></pre>
+          </section>
+
+          <!-- Merged Section -->
+          <section class="card mergeCard">
+            <div class="cardHeader">
+              <div>
+                <h2 id="finalInsightTitle"></h2>
+                <p class="muted" id="finalInsightDesc"></p>
+              </div>
+              <div class="actions">
+                <button id="btnMerge" class="btn btnPrimary" disabled>
+                  <span class="btnText" id="btnMergeText"></span>
+                  <span class="spinner" hidden></span>
+                </button>
+              </div>
+            </div>
+            <pre id="finalInsight" class="insight muted"></pre>
+          </section>
+        </section>
+
+        <!-- Individual Submissions Section -->
+        <section class="card" id="submissionsCard">
+          <h2 id="individualAnswersTitle"></h2>
+          <p class="muted" id="submissionsSubtitle"></p>
+          <div id="submissionsRoot" class="submissionsList"></div>
+        </section>
+
+      </section>
+
+    </main>
+
+    <script src="/admin.js" defer></script>
+  </body>
+</html>

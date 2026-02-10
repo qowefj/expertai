@@ -74,22 +74,6 @@ def merge_final_prompt(expert_insight: str, ai_insight: str) -> str:
     ).strip()
 
 
-def compress_prompt(text: str) -> str:
-    return "\n".join(
-        [
-            f"Aufgabe: Kürze den untenstehenden Text auf <= {MAX_INSIGHT_CHARS} Zeichen, während die Kernpunkte erhalten bleiben.",
-            "Regeln:",
-            "- Bewahre die Bedeutung.",
-            "- Entferne zuerst Redundanzen.",
-            "- Gib NUR den gekürzten Text aus.",
-            "- Antworte auf Deutsch.",
-            "",
-            "Text:",
-            text.strip(),
-        ]
-    ).strip()
-
-
 def multi_expert_summary_prompt(all_responses_text: str, expert_count: int) -> str:
     return "\n".join(
         [
@@ -108,5 +92,30 @@ def multi_expert_summary_prompt(all_responses_text: str, expert_count: int) -> s
             "",
             "Expertenantworten:",
             all_responses_text.strip(),
+        ]
+    ).strip()
+
+
+def comparison_insight_prompt(expert_insight: str, ai_insight: str) -> str:
+    return "\n".join(
+        [
+            "Aufgabe: Vergleiche die Experten-Einsicht mit der KI-Einsicht und hebe die wichtigsten Unterschiede hervor.",
+            "",
+            "Kontext:",
+            INDUSTRY_CONTEXT,
+            "",
+            "Regeln:",
+            "- Identifiziere und erkläre die Hauptunterschiede zwischen beiden Einsichten.",
+            "- Hebe hervor, wo die Experten andere Schwerpunkte setzen als die KI.",
+            "- Erwähne Punkte, die nur in einer der beiden Einsichten vorkommen.",
+            "- Strukturiere die Analyse klar (z.B. Übereinstimmungen, Unterschiede, Nur-Experten, Nur-KI).",
+            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
+            "- Antworte auf Deutsch.",
+            "",
+            "Experten-Einsicht:",
+            expert_insight.strip(),
+            "",
+            "KI-Einsicht:",
+            ai_insight.strip(),
         ]
     ).strip()
