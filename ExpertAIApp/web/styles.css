@@ -620,6 +620,59 @@ html[data-theme="light"] .questionTextarea:focus {
   width: fit-content;
 }
 
+/* Demo card */
+.demoCard {
+  margin-top: 18px;
+}
+
+.demoProgress {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(76, 175, 80, 0.08);
+}
+
+.demoStepText {
+  color: #4caf50;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+html[data-theme="light"] .demoProgress {
+  background: rgba(76, 175, 80, 0.06);
+}
+
+html[data-theme="light"] .demoStepText {
+  color: #2e7d32;
+}
+
+.demoDataPreview {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.demoDataPreview summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+  user-select: none;
+}
+
+.demoDataPreview .demoPreviewBlock {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--inputBg);
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 /* Compare card */
 .compareCard {
   margin-top: 14px;

@@ -73,6 +73,33 @@
           </div>
         </section>
 
+        <!-- Demo Card -->
+        <section class="card demoCard">
+          <div class="cardHeader">
+            <div>
+              <h2 id="demoTitle"></h2>
+              <p class="muted" id="demoDesc"></p>
+            </div>
+            <div class="actions">
+              <button id="btnDemoReset" class="btn btnOutline btnSmall" hidden>
+                <span id="btnDemoResetText"></span>
+              </button>
+              <button id="btnDemo" class="btn btnPrimary btnSmall">
+                <span class="btnText" id="btnDemoText"></span>
+                <span class="spinner" hidden></span>
+              </button>
+            </div>
+          </div>
+          <div id="demoErrorBox" class="errorBox" hidden></div>
+          <div id="demoProgress" class="demoProgress" hidden>
+            <span id="demoStepText" class="demoStepText"></span>
+          </div>
+          <details id="demoDataPreview" class="demoDataPreview">
+            <summary id="demoDataPreviewSummary"></summary>
+            <div id="demoDataPreviewContent"></div>
+          </details>
+        </section>
+
         <!-- Summary Section -->
         <section class="card">
           <div class="cardHeader">

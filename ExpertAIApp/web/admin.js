@@ -52,6 +52,16 @@ const translations = {
     resetQuestionsSuccess: "Fragen auf Standardwerte zurückgesetzt.",
     resetQuestionsError: "Fehler beim Zurücksetzen der Fragen.",
     resetQuestionsConfirm: "Sind Sie sicher, dass Sie die Fragen auf die Standardwerte zurücksetzen möchten?",
+    demoTitle: "Vollständige Demo",
+    demoDesc: "Führen Sie die gesamte KI-Pipeline (Zusammenfassen → Vergleichen → Zusammenführen) mit Testdaten durch.",
+    demoRun: "Demo starten",
+    demoReset: "Demo zurücksetzen",
+    demoStepSummarize: "Schritt 1/3: Experten- und KI-Zusammenfassung wird generiert…",
+    demoStepCompare: "Schritt 2/3: Vergleich wird erstellt…",
+    demoStepMerge: "Schritt 3/3: Zusammenführung wird generiert…",
+    demoComplete: "Demo abgeschlossen — alle 3 Schritte erfolgreich.",
+    demoError: "Fehler bei der Demo",
+    demoPreviewLabel: "Testdaten anzeigen",
   },
   en: {
     subtitle: "Moderator view: View all expert submissions and generate summaries.",
@@ -103,7 +113,74 @@ const translations = {
     resetQuestionsSuccess: "Questions reset to defaults.",
     resetQuestionsError: "Error resetting questions.",
     resetQuestionsConfirm: "Are you sure you want to reset questions to default values?",
+    demoTitle: "Full Demo",
+    demoDesc: "Run the full AI pipeline (Summarize → Compare → Merge) with test data.",
+    demoRun: "Run Demo",
+    demoReset: "Reset Demo",
+    demoStepSummarize: "Step 1/3: Generating expert & AI summaries…",
+    demoStepCompare: "Step 2/3: Generating comparison…",
+    demoStepMerge: "Step 3/3: Generating merged insight…",
+    demoComplete: "Demo complete — all 3 steps successful.",
+    demoError: "Demo error",
+    demoPreviewLabel: "Show test data",
   },
+};
+
+const DEMO_DATA = {
+  questions: [
+    {
+      id: "q1",
+      type: "text",
+      text: "Welche verrechenbaren Services habt ihr in eurem Unternehmen bereits umgesetzt oder als Potenzial evaluiert? (z. B. Remote Support, Monitoring, Predictive, Reporting, Anlagenoptimierung)?",
+    },
+    {
+      id: "q2",
+      type: "text",
+      text: "Was sind eure grössten Herausforderungen/Hindernisse (z.B. Changeprozess, techn. Voraussetzungen, usw.) beim der Umsetzung/Skalierung?",
+    },
+  ],
+  submissions: [
+    {
+      name: "Anna Müller",
+      timestamp: new Date().toISOString(),
+      responses: {
+        q1: "Wir haben Remote Support und Condition Monitoring als erste verrechenbare Services eingeführt. Die Kunden akzeptieren monatliche Gebühren für 24/7-Fernzugriff auf ihre Anlagen. Predictive Maintenance ist in der Pilotphase mit 3 Schlüsselkunden.",
+        q2: "Der grösste Widerstand kommt intern: Vertrieb verkauft lieber Maschinen als Abos. Ausserdem fehlt vielen Bestandsanlagen die nötige Sensorik für datenbasierte Services.",
+      },
+    },
+    {
+      name: "Thomas Weber",
+      timestamp: new Date().toISOString(),
+      responses: {
+        q1: "Unser Fokus liegt auf Reporting-as-a-Service: Kunden erhalten automatisierte Produktionsberichte mit KPI-Dashboards. Daneben bieten wir kostenpflichtige Anlagenoptimierung auf Basis von OEE-Analysen an.",
+        q2: "Technische Voraussetzungen sind die grösste Hürde — heterogene Maschinenparks mit unterschiedlichen Protokollen (OPC UA, Modbus, proprietär). Datenqualität ist oft unzureichend für belastbare Analysen.",
+      },
+    },
+    {
+      name: "Sarah Koch",
+      timestamp: new Date().toISOString(),
+      responses: {
+        q1: "Wir evaluieren gerade Predictive Maintenance und Energy Monitoring als neue Serviceprodukte. Remote Support gibt es schon länger, wird aber bisher nicht separat verrechnet sondern ist Teil des Wartungsvertrags.",
+        q2: "Changeprozess ist bei uns zentral: Die Serviceorganisation muss von reaktiv auf proaktiv umgestellt werden. Auch die Preisfindung für digitale Services ist schwierig — Kunden vergleichen mit kostenlosen Cloud-Tools.",
+      },
+    },
+    {
+      name: "Markus Hoffmann",
+      timestamp: new Date().toISOString(),
+      responses: {
+        q1: "Wir haben ein IoT-Portal mit Monitoring und Alarmierung produktiv. Kunden zahlen pro Maschine und Monat. Zusätzlich bieten wir auf Abruf Prozessoptimierungs-Workshops an, die auf den gesammelten Daten basieren.",
+        q2: "IT-Security ist das grösste Hindernis. Viele Kunden erlauben keinen Fernzugriff auf ihre Netzwerke. Ausserdem ist die Skalierung schwierig, weil jeder Kunde individuelle Anpassungen verlangt.",
+      },
+    },
+    {
+      name: "Lisa Braun",
+      timestamp: new Date().toISOString(),
+      responses: {
+        q1: "Wir setzen auf ein dreistufiges Modell: Basis (Monitoring), Professional (Predictive + Reporting) und Enterprise (Optimierung + dedizierter Ansprechpartner). Etwa 40% unserer Kunden nutzen mindestens die Basis-Stufe.",
+        q2: "Die grösste Herausforderung ist der Nachweis des ROI gegenüber dem Kunden. Ohne klare Business Cases kaufen Entscheider keine Abo-Services. Auch die Integration in bestehende ERP-/MES-Landschaften kostet viel Zeit.",
+      },
+    },
+  ],
 };
 
 const state = {
@@ -120,6 +197,8 @@ const state = {
   isComparing: false,
   isMerging: false,
   isSavingQuestions: false,
+  isDemoRunning: false,
+  demoStep: "",
   error: "",
   questionsError: "",
   lang: "de",
@@ -174,6 +253,19 @@ const els = {
   btnResetQuestionsText: document.getElementById("btnResetQuestionsText"),
   btnAddQuestion: document.getElementById("btnAddQuestion"),
   btnAddQuestionText: document.getElementById("btnAddQuestionText"),
+  // Demo elements
+  demoTitle: document.getElementById("demoTitle"),
+  demoDesc: document.getElementById("demoDesc"),
+  btnDemo: document.getElementById("btnDemo"),
+  btnDemoText: document.getElementById("btnDemoText"),
+  btnDemoReset: document.getElementById("btnDemoReset"),
+  btnDemoResetText: document.getElementById("btnDemoResetText"),
+  demoErrorBox: document.getElementById("demoErrorBox"),
+  demoProgress: document.getElementById("demoProgress"),
+  demoStepText: document.getElementById("demoStepText"),
+  demoDataPreview: document.getElementById("demoDataPreview"),
+  demoDataPreviewSummary: document.getElementById("demoDataPreviewSummary"),
+  demoDataPreviewContent: document.getElementById("demoDataPreviewContent"),
 };
 
 function t(key) {
@@ -223,6 +315,13 @@ function applyLang(lang) {
   if (els.btnResetQuestionsText) els.btnResetQuestionsText.textContent = t("resetQuestions");
   if (els.btnAddQuestionText) els.btnAddQuestionText.textContent = t("addQuestion");
   
+  // Demo card
+  if (els.demoTitle) els.demoTitle.textContent = t("demoTitle");
+  if (els.demoDesc) els.demoDesc.textContent = t("demoDesc");
+  if (els.btnDemoText) els.btnDemoText.textContent = t("demoRun");
+  if (els.btnDemoResetText) els.btnDemoResetText.textContent = t("demoReset");
+  if (els.demoDataPreviewSummary) els.demoDataPreviewSummary.textContent = t("demoPreviewLabel");
+
   // Update theme button text
   const currentTheme = document.documentElement.dataset.theme;
   if (els.btnTheme) {
@@ -322,6 +421,10 @@ function updateButtonState() {
   setButtonLoading(els.btnCompare, state.isComparing);
   setButtonLoading(els.btnMerge, state.isMerging);
   setButtonLoading(els.btnSaveQuestions, state.isSavingQuestions);
+  if (els.btnDemo) {
+    els.btnDemo.disabled = state.isDemoRunning;
+    setButtonLoading(els.btnDemo, state.isDemoRunning);
+  }
 }
 
 function formatDate(isoString) {
@@ -630,6 +733,113 @@ function handleAddQuestion() {
   renderQuestionsEditor();
 }
 
+function renderDemoPreview() {
+  if (!els.demoDataPreviewContent) return;
+  let html = "";
+  for (const q of DEMO_DATA.questions) {
+    html += `<div class="demoPreviewBlock"><strong>${q.text}</strong></div>`;
+  }
+  for (const sub of DEMO_DATA.submissions) {
+    let lines = `<strong>${sub.name}</strong>\n`;
+    for (const q of DEMO_DATA.questions) {
+      lines += `\n${q.text}\n→ ${sub.responses[q.id] || "(keine Antwort)"}\n`;
+    }
+    html += `<div class="demoPreviewBlock">${lines}</div>`;
+  }
+  els.demoDataPreviewContent.innerHTML = html;
+}
+
+function setDemoError(message) {
+  if (!els.demoErrorBox) return;
+  if (!message) {
+    els.demoErrorBox.hidden = true;
+    els.demoErrorBox.textContent = "";
+    return;
+  }
+  els.demoErrorBox.hidden = false;
+  els.demoErrorBox.textContent = message;
+}
+
+function setDemoStep(stepKey) {
+  state.demoStep = stepKey || "";
+  if (!els.demoProgress) return;
+  if (!stepKey) {
+    els.demoProgress.hidden = true;
+    els.demoStepText.textContent = "";
+    return;
+  }
+  els.demoProgress.hidden = false;
+  els.demoStepText.textContent = t(stepKey);
+}
+
+async function handleDemo() {
+  setDemoError("");
+  state.isDemoRunning = true;
+  // Clear previous insights
+  state.expertInsight = "";
+  state.aiInsight = "";
+  state.comparisonInsight = "";
+  state.finalInsight = "";
+  els.resultsSection.hidden = false;
+  if (els.btnDemoReset) els.btnDemoReset.hidden = true;
+  updateButtonState();
+  render();
+
+  try {
+    // Step 1: Summarize
+    setDemoStep("demoStepSummarize");
+    const sumData = await postJson(
+      `/api/admin/demo/summarize?key=${encodeURIComponent(state.adminKey)}`,
+      { questions: DEMO_DATA.questions, submissions: DEMO_DATA.submissions },
+      { timeoutMs: 180_000 },
+    );
+    state.expertInsight = sumData.expertInsight || "";
+    state.aiInsight = sumData.aiInsight || "";
+    render();
+
+    // Step 2: Compare
+    setDemoStep("demoStepCompare");
+    const cmpData = await postJson(
+      `/api/admin/compare?key=${encodeURIComponent(state.adminKey)}`,
+      { expertInsight: state.expertInsight, aiInsight: state.aiInsight },
+      { timeoutMs: 180_000 },
+    );
+    state.comparisonInsight = cmpData.comparisonInsight || "";
+    render();
+
+    // Step 3: Merge
+    setDemoStep("demoStepMerge");
+    const mergeData = await postJson(
+      `/api/admin/merge?key=${encodeURIComponent(state.adminKey)}`,
+      { expertInsight: state.expertInsight, aiInsight: state.aiInsight },
+      { timeoutMs: 180_000 },
+    );
+    state.finalInsight = mergeData.finalInsight || "";
+    render();
+
+    setDemoStep("demoComplete");
+    if (els.btnDemoReset) els.btnDemoReset.hidden = false;
+  } catch (e) {
+    setDemoError(e instanceof Error ? e.message : t("demoError"));
+    setDemoStep("");
+  } finally {
+    state.isDemoRunning = false;
+    updateButtonState();
+  }
+}
+
+function handleDemoReset() {
+  state.expertInsight = "";
+  state.aiInsight = "";
+  state.comparisonInsight = "";
+  state.finalInsight = "";
+  els.resultsSection.hidden = true;
+  if (els.btnDemoReset) els.btnDemoReset.hidden = true;
+  setDemoStep("");
+  setDemoError("");
+  render();
+}
+
 async function handleSummarize() {
   setError("");
   state.isSummarizing = true;
@@ -758,6 +968,11 @@ async function init() {
   if (els.btnSaveQuestions) els.btnSaveQuestions.addEventListener("click", handleSaveQuestions);
   if (els.btnResetQuestions) els.btnResetQuestions.addEventListener("click", handleResetQuestions);
   if (els.btnAddQuestion) els.btnAddQuestion.addEventListener("click", handleAddQuestion);
+
+  // Demo listeners
+  if (els.btnDemo) els.btnDemo.addEventListener("click", handleDemo);
+  if (els.btnDemoReset) els.btnDemoReset.addEventListener("click", handleDemoReset);
+  renderDemoPreview();
 
   render();
 }

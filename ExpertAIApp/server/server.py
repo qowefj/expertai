@@ -381,9 +381,42 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/api/admin/questions/reset":
                 if not _check_admin_key(parsed):
                     return _json_response(self, 401, {"error": "Unauthorized", "message": "Invalid admin key"})
-            
+
                 result = reset_questions()
                 return _json_response(self, 200, result)
+
+            # Admin: Demo summarize (no storage access)
+            if parsed.path == "/api/admin/demo/summarize":
+                if not _check_admin_key(parsed):
+                    return _json_response(self, 401, {"error": "Unauthorized", "message": "Invalid admin key"})
+
+                questions = body.get("questions")
+                submissions = body.get("submissions")
+                if not questions or not submissions:
+                    return _json_response(self, 400, {"error": "questions and submissions are required"})
+
+                start_time = time.time()
+                try:
+                    logger.info("Starting demo/summarize with %d submissions (timeout %ds)", len(submissions), REQUEST_TIMEOUT)
+
+                    with ThreadPoolExecutor(max_workers=2) as executor:
+                        future_expert = executor.submit(generate_multi_expert_summary, questions, submissions)
+                        future_ai = executor.submit(generate_ai_insight, questions)
+
+                        expert = future_expert.result(timeout=REQUEST_TIMEOUT)
+                        ai = future_ai.result(timeout=REQUEST_TIMEOUT)
+
+                    elapsed = time.time() - start_time
+                    logger.info("Demo summarize completed in %.2fs", elapsed)
+                    return _json_response(self, 200, {"expertInsight": expert, "aiInsight": ai})
+                except FuturesTimeoutError:
+                    elapsed = time.time() - start_time
+                    logger.error("Demo summarize timed out after %.2fs (limit %ds)", elapsed, REQUEST_TIMEOUT)
+                    return _json_response(self, 504, {"error": "Request timeout", "message": f"LLM generation timed out after {int(elapsed)}s. Try again or increase CONCIRCLE_REQUEST_TIMEOUT."})
+                except Exception as e:
+                    elapsed = time.time() - start_time
+                    logger.error("Demo summarize failed after %.2fs: %s: %s", elapsed, type(e).__name__, e)
+                    return _json_response(self, 500, {"error": "LLM generation failed", "message": str(e)})
 
             return _json_response(self, 404, {"error": "Not Found"})
         except Exception as e:
