@@ -52,29 +52,27 @@ body {
   padding: 28px 18px 48px;
 }
 
+.header {
+  text-align: center;
+  position: relative;
+  padding-top: 8px;
+}
+
 .header h1 {
-  margin: 0 0 6px;
+  margin: 8px 0 6px;
   font-size: 22px;
   letter-spacing: -0.02em;
 }
 
-.headerRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  position: relative;
-}
-
 .headerLogo {
-  height: 32px;
+  height: 40px;
   width: auto;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .headerButtons {
+  position: absolute;
+  top: 8px;
+  right: 0;
   display: flex;
   gap: 8px;
 }
