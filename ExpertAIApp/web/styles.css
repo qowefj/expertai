@@ -63,11 +63,15 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  position: relative;
 }
 
 .headerLogo {
   height: 32px;
   width: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .headerButtons {
