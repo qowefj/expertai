@@ -65,6 +65,11 @@ body {
   gap: 12px;
 }
 
+.headerLogo {
+  height: 32px;
+  width: auto;
+}
+
 .headerButtons {
   display: flex;
   gap: 8px;
