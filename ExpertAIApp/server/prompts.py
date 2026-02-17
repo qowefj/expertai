@@ -25,7 +25,7 @@ def ai_insight_prompt(questions_text: str) -> str:
             "Aufgabe: Beantworte die folgenden Fragen als Experte. Die Ausgabe sollte eine einzige kombinierte Einsicht für alle Fragen sein.",
             "",
             "Regeln:",
-            "- Nutze dein Fachwissen, um Geschäftswert, Herausforderungen, Trends und umsetzbare Ideen vorzuschlagen.",
+            "- Beantworte die Fragen fachlich fundiert und präzise.",
             "- Beziehe dich NICHT auf Expertenantworten (es werden keine bereitgestellt).",
             f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
             "- Antworte auf Deutsch.",
