@@ -1,19 +1,19 @@
 MAX_INSIGHT_CHARS = 2000
 
-SYSTEM_BASE = "Du bist ein präziser Experten-Assistent. Befolge die Anweisungen genau."
+SYSTEM_BASE = "You are a precise expert assistant. Follow the instructions exactly."
 
 def expert_insight_prompt(responses_text: str) -> str:
     return "\n".join(
         [
-            "Aufgabe: Erstelle eine Experten-Zusammenfassung durch Zusammenführen und Zusammenfassen der untenstehenden Expertenantworten.",
+            "Task: Create an expert summary by merging and summarizing the expert responses below.",
             "",
-            "Regeln:",
-            "- Fasse die Antworten der Experten zusammen und hebe die wichtigsten Punkte hervor.",
-            "- Du darfst für Klarheit umformulieren und Duplikate zusammenfassen.",
-            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
-            "- Antworte auf Deutsch.",
+            "Rules:",
+            "- Summarize the expert responses and highlight the most important points.",
+            "- You may rephrase for clarity and consolidate duplicates.",
+            f"- The output must be <= {MAX_INSIGHT_CHARS} characters.",
+            "- Answer in English.",
             "",
-            "Expertenantworten:",
+            "Expert responses:",
             responses_text.strip(),
         ]
     ).strip()
@@ -22,15 +22,15 @@ def expert_insight_prompt(responses_text: str) -> str:
 def ai_insight_prompt(questions_text: str) -> str:
     return "\n".join(
         [
-            "Aufgabe: Beantworte die folgenden Fragen als Experte. Die Ausgabe sollte eine einzige kombinierte Einsicht für alle Fragen sein.",
+            "Task: Answer the following questions as an expert. The output should be a single combined insight for all questions.",
             "",
-            "Regeln:",
-            "- Beantworte die Fragen fachlich fundiert und präzise.",
-            "- Beziehe dich NICHT auf Expertenantworten (es werden keine bereitgestellt).",
-            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
-            "- Antworte auf Deutsch.",
+            "Rules:",
+            "- Answer the questions with professional expertise and precision.",
+            "- Do NOT reference expert responses (none are provided).",
+            f"- The output must be <= {MAX_INSIGHT_CHARS} characters.",
+            "- Answer in English.",
             "",
-            "Fragen:",
+            "Questions:",
             questions_text.strip(),
         ]
     ).strip()
@@ -39,18 +39,18 @@ def ai_insight_prompt(questions_text: str) -> str:
 def merge_final_prompt(expert_insight: str, ai_insight: str) -> str:
     return "\n".join(
         [
-            "Aufgabe: Erstelle eine finale Einsicht durch Zusammenführen und Verfeinern der KI-Einsicht mit der Experten-Einsicht.",
+            "Task: Create a final insight by merging and refining the AI insight with the expert insight.",
             "",
-            "Regeln:",
-            "- Halte es diskussionsbereit und prägnant.",
-            "- Bevorzuge bei Spannungen die Ausrichtung an der Experten-Einsicht.",
-            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
-            "- Antworte auf Deutsch.",
+            "Rules:",
+            "- Keep it discussion-ready and concise.",
+            "- When there is tension, prefer alignment with the expert insight.",
+            f"- The output must be <= {MAX_INSIGHT_CHARS} characters.",
+            "- Answer in English.",
             "",
-            "Experten-Einsicht:",
+            "Expert insight:",
             expert_insight.strip(),
             "",
-            "KI-Einsicht:",
+            "AI insight:",
             ai_insight.strip(),
         ]
     ).strip()
@@ -59,17 +59,17 @@ def merge_final_prompt(expert_insight: str, ai_insight: str) -> str:
 def multi_expert_summary_prompt(all_responses_text: str, expert_count: int) -> str:
     return "\n".join(
         [
-            f"Aufgabe: Erstelle eine umfassende Zusammenfassung der Antworten von {expert_count} Experten.",
+            f"Task: Create a comprehensive summary of the responses from {expert_count} experts.",
             "",
-            "Regeln:",
-            "- Fasse die Antworten aller Experten zusammen und identifiziere gemeinsame Themen.",
-            "- Hebe sowohl Übereinstimmungen als auch unterschiedliche Perspektiven hervor.",
-            "- Identifiziere die wichtigsten Trends und Herausforderungen, die von mehreren Experten genannt wurden.",
-            "- Du darfst für Klarheit umformulieren und Duplikate zusammenfassen.",
-            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
-            "- Antworte auf Deutsch.",
+            "Rules:",
+            "- Summarize the responses of all experts and identify common themes.",
+            "- Highlight both agreements and differing perspectives.",
+            "- Identify the most important trends and challenges mentioned by multiple experts.",
+            "- You may rephrase for clarity and consolidate duplicates.",
+            f"- The output must be <= {MAX_INSIGHT_CHARS} characters.",
+            "- Answer in English.",
             "",
-            "Expertenantworten:",
+            "Expert responses:",
             all_responses_text.strip(),
         ]
     ).strip()
@@ -78,20 +78,20 @@ def multi_expert_summary_prompt(all_responses_text: str, expert_count: int) -> s
 def comparison_insight_prompt(expert_insight: str, ai_insight: str) -> str:
     return "\n".join(
         [
-            "Aufgabe: Vergleiche die Experten-Einsicht mit der KI-Einsicht und hebe die wichtigsten Unterschiede hervor.",
+            "Task: Compare the expert insight with the AI insight and highlight the key differences.",
             "",
-            "Regeln:",
-            "- Identifiziere und erkläre die Hauptunterschiede zwischen beiden Einsichten.",
-            "- Hebe hervor, wo die Experten andere Schwerpunkte setzen als die KI.",
-            "- Erwähne Punkte, die nur in einer der beiden Einsichten vorkommen.",
-            "- Strukturiere die Analyse klar (z.B. Übereinstimmungen, Unterschiede, Nur-Experten, Nur-KI).",
-            f"- Die Ausgabe muss <= {MAX_INSIGHT_CHARS} Zeichen sein.",
-            "- Antworte auf Deutsch.",
+            "Rules:",
+            "- Identify and explain the main differences between both insights.",
+            "- Highlight where experts place different emphasis than the AI.",
+            "- Mention points that appear in only one of the two insights.",
+            "- Structure the analysis clearly (e.g. agreements, differences, expert-only, AI-only).",
+            f"- The output must be <= {MAX_INSIGHT_CHARS} characters.",
+            "- Answer in English.",
             "",
-            "Experten-Einsicht:",
+            "Expert insight:",
             expert_insight.strip(),
             "",
-            "KI-Einsicht:",
+            "AI insight:",
             ai_insight.strip(),
         ]
     ).strip()
